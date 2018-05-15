@@ -15,7 +15,7 @@ class Currency(models.Model):
     rate = models.DecimalField('kurs',max_digits=5,decimal_places=4)
 
 class Category(models.Model):
-    description = models.CharField('nazwa',max_length=100)
+    name = models.CharField('nazwa',max_length=100)
 
 class Transactions(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)

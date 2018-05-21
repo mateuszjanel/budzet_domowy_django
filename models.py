@@ -2,6 +2,8 @@ from django.db import models
 from datetime import date
 
 class User(models.Model):
+    login = models.CharField(max_length=20)
+    password = models.CharField(max_length=64)
     first_name = models.CharField("imię",max_length=100)
     last_name = models.CharField("nazwisko",max_length=100)
     type = models.CharField(max_length=100)

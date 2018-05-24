@@ -2,10 +2,11 @@
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
-		<title>{ % block title % }{ % endblock % }</title>
+		<title>{% block title %}Baza{% endblock %}</title>
+		<link rel="stylesheet" href="base.css">
 	</head>
 
 	<body>
-	{ % block content % }{ % endblock % } 
+	{% block content %}"eldoprezidento"{% endblock %} 
 	</body>
 </html>

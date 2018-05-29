@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Budżet Domowy -Raport{% endblock %}
+
+{% block content %}
+<h1>Budżet Domowy</h1>
+<p>Raport</p>
+{% if transactions %}
+<table>
+    {% for transaction in transactions %}
+        <tr>
+            <td>{{transaction.user}}</td>
+            <td>{{transaction.account}}</td>
+            <td>{{transaction.date}}</td>
+            <td>{{transaction.amount}}</td>
+            <td>{{transaction.currency}}</td>
+            <td>{{transaction.categories}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>Brak transakcji</p>
+{% endif %}
+{% endblock %}

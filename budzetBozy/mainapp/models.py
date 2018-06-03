@@ -35,7 +35,7 @@ class Transaction(models.Model):
     currency = models.ForeignKey(
         Currency, on_delete=models.CASCADE, verbose_name="waluta")
     categories = models.ManyToManyField(
-        Category, on_delete=models.CASCADE, verbose_name="kategoria")
+        Category, verbose_name="kategoria")
 
     class Meta:
         ordering = ['-date']

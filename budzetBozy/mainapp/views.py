@@ -12,6 +12,6 @@ def podstrona(request,param1,param2):
     return HttpResponse(response)
 
 def raport(request):
-    transactions = Transaction.objects
+    transactions = Transaction.objects.all()
     context = {'transactions' : transactions}
     return render(request,'raport.html', context)

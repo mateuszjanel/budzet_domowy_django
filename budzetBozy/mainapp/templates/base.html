@@ -1,13 +1,36 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
 		<title>{% block title %}Baza{% endblock %}</title>
-		<link rel="stylesheet" href="base.css">
+		<link rel="stylesheet" href="{% static 'base.css' %}">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
 	</head>
 
 	<body>
+		<div id="logo">
+			<a href="/"><h1>Budżet domowy</h1></a>
+			<div class="container">
+					<ul class="nav justify-content-end nav-pills">
+						<li class="nav-item">
+						  <a class="nav-link" href="#">Moje konta</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="/raport">Moje transakcje</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">Inna opcja</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">Jeszcze inna opcja</a>
+						</li>
+					</ul>
+				</div>
+		</div>
+		
 	{% block content %}"Baza"{% endblock %}
-	{% block nawigacja %}Nawigacjon{% endblock %}
 	</body>
 </html>

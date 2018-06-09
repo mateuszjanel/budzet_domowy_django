@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Budżet Domowy - Dodanie Transakcji{% endblock %}
+
+{% block content %}
+    <h1>Nowa Kategoria</h1>
+    <form method="POST" class="category-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Dodaj</button>
+    </form>
+{% endblock %}

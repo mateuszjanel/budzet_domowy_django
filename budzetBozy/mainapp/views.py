@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.http import HttpResponse
-from .models import Transaction
-from .forms import TransactionForm,CategoryForm
+from .models import Transaction,StandingOrder
+from .forms import TransactionForm,CategoryForm,StandingOrderForm
 
 def index(request):
     return render(request,'index.html')
@@ -29,6 +29,14 @@ def dodanie_transakcji(request):
         form = TransactionForm()
         return render(request, 'dodanie-transakcji.html', {'form':form})
 
+def dodanie_zlecenia_stalego(request): 
+    if request.method == "POST": 
+        # tu też poczekaj na ogarnięcie kont 
+        return redirect('index') 
+    else: 
+        form = StandingOrderForm() 
+        return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 
+ 
 def dodanie_kategorii(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)

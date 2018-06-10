@@ -1,0 +1,11 @@
+{% extends "base.html" %} 
+ 
+{% block title %}Budżet Domowy - Dodanie zlecenia stałego{% endblock %} 
+ 
+{% block content %} 
+    <h2>Nowe zlecenie stałe</h2> 
+    <form method="POST" class="standing-order-form">{% csrf_token %} 
+        {{ form.as_p }} 
+        <button type="submit" class="save btn btn-default">Dodaj</button> 
+    </form> 
+{% endblock %}

@@ -1,36 +1,50 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pl">
-	<head>
-		<meta charset="utf-8">
-		<title>{% block title %}Baza{% endblock %}</title>
-		<link rel="stylesheet" href="{% static 'base.css' %}">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 
-	</head>
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}Baza{% endblock %}</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
 
-	<body>
-		<div id="logo">
-			<a href="/"><h1>Budżet domowy</h1></a>
-			<div class="container">
-					<ul class="nav justify-content-end nav-pills">
-						<li class="nav-item">
-						  <a class="nav-link" href="#">Moje konta</a>
-						</li>
-						<li class="nav-item">
-						  <a class="nav-link" href="/raport">Moje transakcje</a>
-						</li>
-						<li class="nav-item">
-						  <a href="{% url 'dodanie_transakcji' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span>Dodaj transakcje</a>
-						</li>
-						<li class="nav-item">
-						  <a href="{% url 'dodanie_kategorii' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span>Dodaj kategorie</a>
-						</li>
-					</ul>
-				</div>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">Budżet domowy</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a href="#">Moje konta</a>
+					</li>
+					<li class="nav-item">
+						<a href="/raport">Moje transakcje</a>
+					</li>
+					<li class="top-menu">
+						<a href="{% url 'dodanie_transakcji' %}">
+							<span class="glyphicon glyphicon-plus"></span>Dodaj transakcję</a>
+					</li>
+					<li class="top-menu">
+						<a href="{% url 'dodanie_zlecenia_stalego' %}">
+							<span class="glyphicon glyphicon-plus"></span>Dodaj zlecenie stałe</a>
+					</li>
+					<li class="top-menu">
+						<a href="{% url 'dodanie_kategorii' %}">
+							<span class="glyphicon glyphicon-plus"></span>Dodaj kategorię</a>
+					</li>
+				</ul>
+			</div>
 		</div>
-		
+	</nav>
+
 	{% block content %}"Baza"{% endblock %}
-	</body>
+
+</body>
+
 </html>

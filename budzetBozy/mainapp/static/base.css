@@ -1,0 +1,12 @@
+body { 
+    background-color: #eeeeee; 
+    font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    font-weight: 500; 
+    font-size: 14px; 
+    color: #1e1e1e; 
+}
+
+.navbar { 
+    margin-bottom: 0; 
+    border-radius: 0; 
+}

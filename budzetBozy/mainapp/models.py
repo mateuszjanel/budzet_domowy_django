@@ -30,12 +30,11 @@ class Category(models.Model):
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    title = models.CharField("tytuł",max_length=50, default='')
     date = models.DateField("data", default=date.today)
     amount = models.DecimalField("kwota", max_digits=100, decimal_places=2)
-    currency = models.ForeignKey(
-        Currency, on_delete=models.CASCADE, verbose_name="waluta")
-    categories = models.ManyToManyField(
-        Category, on_delete=models.CASCADE, verbose_name="kategoria")
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name="waluta")
+    categories = models.ManyToManyField(Category, verbose_name="kategoria")
 
     class Meta:
         ordering = ['-date']
@@ -47,3 +46,17 @@ class Permission(models.Model):
     view = models.BooleanField("przeglądanie", default=True)
     deposit = models.BooleanField("wpłacanie", default=True)
     withdraw = models.BooleanField("wypłacanie", default=False)
+
+
+class StandingOrder(models.Model): 
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    account = models.ForeignKey(Account, on_delete=models.CASCADE) 
+    title = models.CharField("tytuł", max_length=30, default='') 
+    amount = models.DecimalField("kwota", max_digits=100, decimal_places=2) 
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name="waluta") 
+    categories = models.ManyToManyField(Category, verbose_name="kategoria") 
+    next_date = models.DateField("data następnego wykonania", default=date.today) 
+    frequency = models.IntegerField("częstotlwiość") 
+ 
+    class Meta: 
+        ordering = ['next_date'] 

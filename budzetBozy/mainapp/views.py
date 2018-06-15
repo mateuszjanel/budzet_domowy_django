@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 
 # Create your views here.
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .models import Transaction,StandingOrder
-from .forms import TransactionForm,CategoryForm,StandingOrderForm,RegistrationForm
+from .forms import TransactionForm,CategoryForm,StandingOrderForm#,RegistrationForm
 from django.contrib.auth.models import User
 
 def index(request):
@@ -50,7 +51,8 @@ def dodanie_kategorii(request):
         form = CategoryForm()
         return render(request, 'dodanie-kategorii.html', {'form':form})
 
-        def anonymous_required(view_function, redirect_to = None):
+        
+def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)
 
 class AnonymousRequired(object):
@@ -65,28 +67,28 @@ class AnonymousRequired(object):
             return HttpResponseRedirect(self.redirect_to)
         return self.view_function(request, *args, **kwargs)
 
-@anonymous_required
-def register(request):
-    register_form = RegistrationForm(request.POST or None,
-        initial={
-            'username': '',
-            'email': '',
-            'password': '',
-            'repeat_password': '',
-        }
-    )
-    if request.method == 'POST':
-        if register_form.is_valid():
-            data = register_form.cleaned_data
+# @anonymous_required
+# def register(request):
+#     register_form = RegistrationForm(request.POST or None,
+#         initial={
+#             'username': '',
+#             'email': '',
+#             'password': '',
+#             'repeat_password': '',
+#         }
+#     )
+#     if request.method == 'POST':
+#         if register_form.is_valid():
+#             data = register_form.cleaned_data
 
-            # data.get('username')
-            # data.get('email')
-            # data.get('password')
-            # data.get('repeat_password')
+#             # data.get('username')
+#             # data.get('email')
+#             # data.get('password')
+#             # data.get('repeat_password')
 
-            # Register a new user
-            user = User.objects.create_user(username=data.get('username'),
-                                 email=data.get('email'),
-                                 password=data.get('password'))
+#             # Register a new user
+#             user = User.objects.create_user(username=data.get('username'),
+#                                  email=data.get('email'),
+#                                  password=data.get('password'))
 
-    return render(request, 'registration/register.html', context={'register_form': register_form})
+#     return render(request, 'registration/register.html', context={'register_form': register_form})

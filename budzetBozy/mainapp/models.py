@@ -25,7 +25,12 @@ class Currency(models.Model):
 
 class Category(models.Model):
     name = models.CharField("nazwa", max_length=100)
+    
+    def __str__(self):
+        return self.name
 
+    class Meta:
+        ordering = ['name']
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -56,7 +61,7 @@ class StandingOrder(models.Model):
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name="waluta") 
     categories = models.ManyToManyField(Category, verbose_name="kategoria") 
     next_date = models.DateField("data następnego wykonania", default=date.today) 
-    frequency = models.IntegerField("częstotlwiość") 
+    frequency = models.IntegerField("częstotliwość") 
  
     class Meta: 
         ordering = ['next_date'] 

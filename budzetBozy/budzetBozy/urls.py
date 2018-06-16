@@ -1,5 +1,5 @@
 """budzetBozy URL Configuration
-
+ 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
 Examples:
@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
-
+ 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('mainapp.urls')),
+]
+ 
+#Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

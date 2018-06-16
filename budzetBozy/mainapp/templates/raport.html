@@ -3,7 +3,15 @@
 {% block title %}Budżet Domowy - Raport{% endblock %}
 
 {% block content %}
-<p>Raport</p>
+<ol class="breadcrumb breadcrumb-arrow">
+        <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li>
+        <li class="active"><span>Moje transakcje</span>
+        </li>
+    </ol>
 {% if transactions %}
 <table>
     {% for transaction in transactions %}

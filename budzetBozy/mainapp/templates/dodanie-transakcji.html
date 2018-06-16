@@ -1,11 +1,20 @@
-{% extends "base.html" %}
-
-{% block title %}Budżet Domowy - Dodanie transakcji{% endblock %}
-
+{% extends "base.html" %} 
+    {% block title %}
+        Budżet domowy - Nowa transakcja
+    {% endblock %} 
 {% block content %}
-    <h2>Nowa transakcja</h2>
-    <form method="POST" class="transaction-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Dodaj</button>
-    </form>
+<ol class="breadcrumb breadcrumb-arrow">
+        <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li>
+        <li><a href="/raport">Moje transakcje</a>
+        </li>
+        <li class="active"><span>Nowa transakcja</span>
+        </li>
+    </ol>
+<form method="POST" class="transaction-form">{% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Dodaj</button>
+</form>
 {% endblock %}

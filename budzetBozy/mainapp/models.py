@@ -1,29 +1,28 @@
 from django.db import models
 from datetime import date
-
-
-class User(models.Model):
-    login = models.CharField(max_length=20)
-    password = models.CharField(max_length=64)
-    first_name = models.CharField("imię", max_length=15)
-    last_name = models.CharField("nazwisko", max_length=20)
-
-    def _get_full_name(self):
-        return '%s %s' % (self.first_name, self.last_name)
-    full_name = property(_get_full_name)
-
+from django.contrib.auth.models import User
 
 class Account(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="użytkownik")
+    name = models.CharField("nazwa", max_lenth=15)
     balance = models.DecimalField("saldo", max_digits=100, decimal_places=2)
+
+    class Meta:
+        verbose_name = "konto"
+        verbose_name_plural = "konta"
 
 
 class Currency(models.Model):
     id = models.CharField(max_length=3, primary_key=True)
     rate = models.DecimalField("kurs", max_digits=5, decimal_places=4)
 
+    class Meta:
+        verbose_name = "waluta"
+        verbose_name_plural = "waluty"
+
 
 class Category(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     name = models.CharField("nazwa", max_length=100)
     
     def __str__(self):
@@ -31,6 +30,8 @@ class Category(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = "kategoria"
+        verbose_name_plural = "kategorie"
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -43,15 +44,17 @@ class Transaction(models.Model):
 
     class Meta:
         ordering = ['-date']
+        verbose_name = "transakcja"
+        verbose_name_plural = "transakcje"
 
 
 class Permission(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    view = models.BooleanField("przeglądanie", default=True)
-    deposit = models.BooleanField("wpłacanie", default=True)
-    withdraw = models.BooleanField("wypłacanie", default=False)
+    owner = models.BooleanField("właściciel", default=True)
 
+    class Meta:
+        verbose_name = "uprawnienia"
 
 class StandingOrder(models.Model): 
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
@@ -64,4 +67,6 @@ class StandingOrder(models.Model):
     frequency = models.IntegerField("częstotliwość") 
  
     class Meta: 
-        ordering = ['next_date'] 
+        ordering = ['next_date']
+        verbose_name = "zlecenie stałe"
+        verbose_name_plural = "zlecenia stałe" 

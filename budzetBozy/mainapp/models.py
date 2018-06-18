@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="użytkownik")
-    name = models.CharField("nazwa", max_lenth=15)
+    name = models.CharField("nazwa", max_length=15)
     balance = models.DecimalField("saldo", max_digits=100, decimal_places=2)
 
     class Meta:

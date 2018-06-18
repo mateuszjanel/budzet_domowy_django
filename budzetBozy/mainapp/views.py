@@ -22,11 +22,13 @@ def raport(request):
  
 def dodanie_transakcji(request):
     if request.method == "POST":
-        # Czekam na ogarniecie kont i kont użytkownikow
-        #form = TransactionForm(request.POST)
-        #if form.is_valid():
-        #    post = form.save(commit=False)
-        #    post.save()
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            trans = form.save(commit=False)
+            trans.user = request.user
+            trans.account = request.session['current_account']
+            trans.save()
+
         return redirect('index')
     else:
         form = TransactionForm()
@@ -44,12 +46,25 @@ def dodanie_kategorii(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
+            cat = form.save(commit=False)
+            cat.save()
         return redirect('index')
     else:
         form = CategoryForm()
         return render(request, 'dodanie-kategorii.html', {'form':form})
+
+def dodanie_konta(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            acc = form.save(commit=False)
+            acc.user = request.user
+            acc.balance = 0
+            acc.save()
+        return redirect('index')
+    else:
+        form = AccountForm()
+        return render(request, 'dodanie-konta.html', {'form':form})
  
         
 def anonymous_required(view_function, redirect_to = None):

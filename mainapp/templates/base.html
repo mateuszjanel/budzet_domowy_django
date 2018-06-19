@@ -76,9 +76,20 @@
 							</li>
 						</ul>
 					</li>
-					<li class="nav-item">
-						<a href="{% url 'dodanie_konta' %}">
-							<span class="glyphicon glyphicon-plus"></span> Dodaj konto</a>
+					<li class="dropdown">
+						<a class="nav-item" href="#accountsSubmenu" data-toggle="collapse" aria-expanded="false">Moje konta
+						</a>
+						<ul class="collapse nav nav-pills nav-stacked dropdown-container" id="accountsSubmenu">
+							{% for acc in accounts %}
+							<li>
+								<a href="#">{{ acc.name }}</a>
+							</li>
+							{% endfor %}
+							<li>
+								<a href="{% url 'dodanie_konta' %}">
+									<span class="glyphicon glyphicon-plus"></span> Dodaj</a>
+							</li>
+						</ul>
 					</li>
 					<li class="nav-item">
 						<a href="{% url 'dodanie_zlecenia_stalego' %}">

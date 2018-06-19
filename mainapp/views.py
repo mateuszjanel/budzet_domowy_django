@@ -8,10 +8,14 @@ from .models import *
 from .forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+
+from django.views.generic import ListView
  
 def index(request):
     if request.user.is_authenticated:
-        return render(request,'index.html')
+        accounts = Account.objects.filter(user = request.user)
+        context = {'accounts' : accounts}
+        return render(request,'index.html', context)
     else:
         return render(request,'registration/login.html')
 

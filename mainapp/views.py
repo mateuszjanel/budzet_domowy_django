@@ -13,15 +13,23 @@ from django.views.generic import ListView
  
 def index(request):
     if request.user.is_authenticated:
-        accounts = Account.objects.filter(user = request.user)
-        context = {'accounts' : accounts}
-        return render(request,'index.html', context)
+        if('accounts' not in request.session):
+            accounts = Account.objects.filter(user = request.user).values()
+            request.session['accounts'] = list(accounts)
+            for i in request.session['accounts']:
+                i['balance'] = str(i['balance'])
+        return render(request,'index.html')
     else:
         return render(request,'registration/login.html')
 
 @login_required
 def raport(request):
-    transactions = Transaction.objects.all()
+    transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account'))
+    context = {'transactions' : transactions}
+    return render(request,'raport.html', context)
+
+def raportAll(request):
+    transactions = Transaction.objects.filter(user = request.user)
     context = {'transactions' : transactions}
     return render(request,'raport.html', context)
 
@@ -34,7 +42,7 @@ def dodanie_transakcji(request):
             trans.user = request.user
             trans.account = request.session['current_account']
             trans.save()
-
+            
         return redirect('index')
     else:
         form = TransactionForm()

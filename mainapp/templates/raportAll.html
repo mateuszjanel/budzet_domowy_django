@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Raport | Budżet domowy{% endblock %}
+{% block title %}Raport ogólny| Budżet domowy{% endblock %}
 
 {% block content %}
 <ol class="breadcrumb breadcrumb-arrow">
@@ -9,20 +9,21 @@
                 <i class="glyphicon glyphicon-home"></i>
             </a>
         </li>
-        <li class="active"><span>{{request.session.current_account.name}} - Transakcje</span>
+        <li class="active"><span>Wszystkie transakcje</span>
         </li>
     </ol>
 {% if transactions %}
 <table class="border">
     {% for transaction in transactions %}
         <tr>
+            <td>{{transaction.account.name}}</td>
             <td>{{transaction.title}}</td>
             <td>{{transaction.date}}</td>
             <td>{{transaction.amount}}</td>
-            <td>{{transaction.currency}}</td>
+            <td>{{transaction.currency.name}}</td>
             <td>
                 {% for category in transaction.categories %}
-                    {{category.name}}, 
+                    {{category.name}},
                 {% endfor %}
             </td>
         </tr>

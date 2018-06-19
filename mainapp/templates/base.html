@@ -58,12 +58,12 @@
 				{% endif %}
 				<p>
 					Stan skarbonki:
-					bieda
+					{% if request.session.current_account %} {{request.session.current_account.balance}} {% else %} --{% endif %}
 				</p>
 				<div class="dropdown">
 					Skarbonka:
 					<button id="accountsDropdown" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						current account
+						{% if request.session.current_account %} {{request.session.current_account.name}} {% else %} nie wybrano{% endif %}
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="accountsDropdown">
@@ -78,7 +78,10 @@
 						</a>
 						<ul class="collapse nav nav-pills nav-stacked dropdown-container" id="transactionsSubmenu">
 							<li>
-								<a href="/raport">Przeglądaj</a>
+								<a href="/raport">Transakcje skarbonki</a>
+							</li>
+							<li>
+								<a href="/raportAll">Wszystkie transakcje</a>
 							</li>
 							<li>
 								<a href="{% url 'dodanie_transakcji' %}">
@@ -90,7 +93,7 @@
 						<a class="nav-item" href="#accountsSubmenu" data-toggle="collapse" aria-expanded="false">Moje konta
 						</a>
 						<ul class="collapse nav nav-pills nav-stacked dropdown-container" id="accountsSubmenu">
-							{% for acc in accounts %}
+							{% for acc in request.session.accounts %}
 							<li>
 								<a href="#">{{ acc.name }}</a>
 							</li>

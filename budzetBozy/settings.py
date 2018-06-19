@@ -127,3 +127,5 @@ STATICFILES_DIRS = [
  
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"

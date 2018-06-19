@@ -1,39 +1,82 @@
-{% extends "base.html" %}
- 
-{% block content %}
- 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
- 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
- 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
- 
-<div>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</div>
-<div>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</div>
- 
-<div>
-  <input type="submit" value="login" />
-  <input type="hidden" name="next" value="{{ next }}" />
-</div>
-</form>
- 
-<!-- {# Assumes you setup the password_reset view in your URLconf #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Zaloguj się | Budżet domowy{% endblock %}</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'login.css' %}" type="text/css">
+</head>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Budżet domowy</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+        <li>
+          <a>
+            <span class="glyphicon glyphicon-user"></span> {{ user.get_username }}</a>
+        </li>
+        <li>
+          <a href="{% url 'logout'%}?next={{request.path}}">
+            <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+        </li>
+        {% else %}
+        <li>
+          <a href="{% url 'login'%}?next={{request.path}}">
+            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <div id="main-container">
+    <div class="container">
+      <div id="login-wrapper" class="login-container">
+        <div id="login-form-container">
+          {% block content %} {% if form.errors %}
+          <p>Your username and password didn't match. Please try again.</p>
+          {% endif %} {% if user.is_authenticated %}
+          <p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+          {% else %}
+          <p>Please login to see this page</p>
+          {% endif %}
+
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label class="reg-lbl" for="id_username">Nazwa użytkownika</label><br>
+              <input class="form-control" id="id_username" type="text" name="username" autofocus="" maxlength="254" required="" /> 
+            </div>
+            <div class="form-group">
+                <label class="reg-lbl" for="id_password">Hasło</label><br>
+                <input class="form-control" id="id_password" type="password" name="password" required="" /> 
+            </div>
+
+            <div>
+              <input class="btn" type="submit" value="Zaloguj" />
+              <input type="hidden" name="next" value="{{ next }}" />
+            </div>
+          </form>
+
+          <!-- {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Lost password?</a></p> -->
- 
-{% endblock %}
+
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

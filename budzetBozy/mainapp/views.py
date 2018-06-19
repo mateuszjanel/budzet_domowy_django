@@ -10,7 +10,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
  
 def index(request):
-    return render(request,'index.html')
+    if request.user.is_authenticated:
+        return render(request,'index.html')
+    else:
+        return render(request,'registration/login.html')
  
 def podstrona(request,param1,param2):
     response = '<b>Parametr 1:</b> ' + param1 + '<br>' + '<b>Parametr 2:</b> ' + param2

@@ -4,9 +4,10 @@ from django.conf import settings
 # Create your views here.
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from .models import Transaction,StandingOrder
+from .models import *
 from .forms import TransactionForm,CategoryForm,StandingOrderForm#,RegistrationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
  
 def index(request):
     return render(request,'index.html')
@@ -14,24 +15,29 @@ def index(request):
 def podstrona(request,param1,param2):
     response = '<b>Parametr 1:</b> ' + param1 + '<br>' + '<b>Parametr 2:</b> ' + param2
     return HttpResponse(response)
- 
+
+@login_required
 def raport(request):
     transactions = Transaction.objects.all()
     context = {'transactions' : transactions}
     return render(request,'raport.html', context)
- 
+
+@login_required
 def dodanie_transakcji(request):
     if request.method == "POST":
-        # Czekam na ogarniecie kont i kont użytkownikow
-        #form = TransactionForm(request.POST)
-        #if form.is_valid():
-        #    post = form.save(commit=False)
-        #    post.save()
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            trans = form.save(commit=False)
+            trans.user = request.user
+            trans.account = request.session['current_account']
+            trans.save()
+
         return redirect('index')
     else:
         form = TransactionForm()
         return render(request, 'dodanie-transakcji.html', {'form':form})
- 
+
+@login_required
 def dodanie_zlecenia_stalego(request): 
     if request.method == "POST": 
         # tu też poczekaj na ogarnięcie kont 
@@ -39,17 +45,32 @@ def dodanie_zlecenia_stalego(request):
     else: 
         form = StandingOrderForm() 
         return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 
- 
+@login_required 
 def dodanie_kategorii(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
+            cat = form.save(commit=False)
+            cat.save()
         return redirect('index')
     else:
         form = CategoryForm()
         return render(request, 'dodanie-kategorii.html', {'form':form})
+
+def dodanie_konta(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            acc = form.save(commit=False)
+            acc.user = request.user
+            acc.balance = 0
+            acc.save()
+            permission = Permission(user = request.user, account = acc, owner = True)
+            permission.save()
+        return redirect('index')
+    else:
+        form = AccountForm()
+        return render(request, 'dodanie-konta.html', {'form':form})
  
         
 def anonymous_required(view_function, redirect_to = None):

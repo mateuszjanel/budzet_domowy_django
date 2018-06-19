@@ -1,5 +1,5 @@
 from django import forms
-from .models import Transaction, Category, StandingOrder 
+from .models import Transaction, Category, StandingOrder, Account
 
 class TransactionForm(forms.ModelForm):
     class Meta:
@@ -14,5 +14,9 @@ class CategoryForm(forms.ModelForm):
 class StandingOrderForm(forms.ModelForm): 
     class Meta: 
         model = StandingOrder 
-        fields = ('title', 'amount', 'currency', 'categories', 'frequency', 'next_date')
-        
+        fields = ('title', 'amount', 'currency', 'categories', 'frequency', 'next_date',)
+
+class AccountForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ('name',)     

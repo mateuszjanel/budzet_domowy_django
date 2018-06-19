@@ -10,6 +10,10 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'base.css' %}" type="text/css">
 	<link rel="stylesheet" href="{% static 'breadcrumb.css' %}" type="text/css">
+	{% if form %}
+    {{ form.media }}
+    {% endif %}
+
 </head>
 
 </head>
@@ -43,15 +47,21 @@
 	<div class="row-offcanvas row-offcanvas-left">
 		<div id="sidebar" class="sidebar-offcanvas navbar-inverse">
 			<div class="col-md-12 well well-md">
+				{% if user.get_full_name  %}
 				<h4>
 					Witaj, {{ user.get_full_name }}!
 				</h4>
+				{% else %}
+				<h4>
+					Witaj!
+				</h4>
+				{% endif %}
 				<p>
 					Stan skarbonki:
 					bieda
 				</p>
 				<div class="dropdown">
-					Skarobnka:
+					Skarbonka:
 					<button id="accountsDropdown" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						current account
 						<span class="caret"></span>

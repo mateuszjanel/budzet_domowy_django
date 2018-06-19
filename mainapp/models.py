@@ -7,6 +7,9 @@ class Account(models.Model):
     name = models.CharField("nazwa", max_length=15)
     balance = models.DecimalField("saldo", max_digits=100, decimal_places=2)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = "konto"
         verbose_name_plural = "konta"
@@ -15,6 +18,9 @@ class Account(models.Model):
 class Currency(models.Model):
     id = models.CharField(max_length=3, primary_key=True)
     rate = models.DecimalField("kurs", max_digits=5, decimal_places=4)
+
+    def __str__(self):
+        return self.id
 
     class Meta:
         verbose_name = "waluta"
@@ -42,6 +48,9 @@ class Transaction(models.Model):
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name="waluta")
     categories = models.ManyToManyField(Category, verbose_name="kategoria")
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         ordering = ['-date']
         verbose_name = "transakcja"
@@ -66,6 +75,9 @@ class StandingOrder(models.Model):
     next_date = models.DateField("data następnego wykonania", default=date.today) 
     frequency = models.IntegerField("częstotliwość") 
  
+    def __str__(self):
+        return self.title
+        
     class Meta: 
         ordering = ['next_date']
         verbose_name = "zlecenie stałe"

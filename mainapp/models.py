@@ -1,11 +1,12 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="użytkownik")
     name = models.CharField("nazwa", max_length=15)
-    balance = models.DecimalField("saldo", max_digits=100, decimal_places=2)
+    balance = models.DecimalField("saldo", max_digits=100, decimal_places=2,default=Decimal('0.00'))
 
     def __str__(self):
         return self.name

@@ -3,16 +3,31 @@
         Nowe konto | Budżet domowy
     {% endblock %} 
 {% block content %}
-<ol class="breadcrumb breadcrumb-arrow">
-    <li>
-        <a href="/">
-            <i class="glyphicon glyphicon-home"></i>
-        </a>
-    </li>
-    <li class="active"><span>Nowe konto</span>
-    </li>
-</ol>
-<form method="POST" class="transaction-form">{% csrf_token %} {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Dodaj</button>
-</form>
+
+<div id="breadcrumb-panel">
+    <ol class="breadcrumb breadcrumb-arrow">
+        <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li>
+        <li class="active"><span>Nowa skarbonka</span>
+        </li>
+    </ol>
+</div>
+
+<div class="main-container">
+    <div class="container">
+        <div id="form-wrapper" class="form-container">
+            <form method="POST" class="account-form">{% csrf_token %} 
+                <div class="form-group">
+                    {{ form.name.errors }}
+                    <label class="reg-lbl" for="{{ form.name.id_for_label }}">Nazwa: </label>
+                    {{ form.name }}
+                </div> 
+                <button type="submit" class="save btn btn-default">Dodaj</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

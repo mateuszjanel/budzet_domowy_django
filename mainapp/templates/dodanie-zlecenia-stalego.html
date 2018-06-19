@@ -2,16 +2,54 @@
     {% block title %}Nowe zlecenie stałe | Budżet domowy{% endblock %} 
 {% block content %}
 
-<ol class="breadcrumb breadcrumb-arrow">
-    <li>
-        <a href="/">
-            <i class="glyphicon glyphicon-home"></i>
-        </a>
-    </li>
-    <li class="active"><span>Nowe zlecenie stałe</span>
-    </li>
-</ol>
-<form method="POST" class="standing-order-form">{% csrf_token %} {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Dodaj</button>
-</form>
+<div id="breadcrumb-panel">
+    <ol class="breadcrumb breadcrumb-arrow">
+        <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li>
+        <li class="active"><span>Nowe zlecenie stałe</span>
+        </li>
+    </ol>
+
+<div class="main-container">
+        <div class="container">
+            <div id="form-wrapper" class="form-container">
+                <form method="POST" class="standing-order-form">{% csrf_token %} 
+                    <div class="form-group">
+                        {{ form.title.errors }}
+                        <label class="reg-lbl" for="{{ form.title.id_for_label }}">Tytuł: </label>
+                        {{ form.title }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.amount.errors }}
+                        <label class="reg-lbl" for="{{ form.amount.id_for_label }}">Kwota: </label>
+                        <input class="form-control" id="id_amount" type="number" name="amount" required="" min="0" step="0.01"/> 
+                    </div>
+                    <div class="form-group">
+                         {{ form.currency.errors }}
+                        <label class="reg-lbl" for="{{ form.currency.id_for_label }}">Waluta: </label>
+                        {{ form.currency }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.categories.errors }}
+                        <label class="reg-lbl" for="{{ form.categories.id_for_label }}">Kategoria: </label>
+                        {{ form.categories }}
+                    </div>         
+                    <div class="form-group">
+                        {{ form.next_date.errors }}
+                        <label class="reg-lbl" for="{{ form.next_date.id_for_label }}">Data najbliższego wykonania: </label>
+                        {{ form.next_date }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.frequency.errors }}
+                        <label class="reg-lbl" for="{{ form.frequency.id_for_label }}">Częstotliwość: </label>
+                        <input class="form-control" id="id_frequency" type="number" name="frequency" required="" min="0" /> 
+                    </div>
+                    <button type="submit" class="save btn btn-default">Dodaj</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .models import *
-from .forms import TransactionForm,CategoryForm,StandingOrderForm#,RegistrationForm
+from .forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
  
@@ -14,10 +14,6 @@ def index(request):
         return render(request,'index.html')
     else:
         return render(request,'registration/login.html')
- 
-def podstrona(request,param1,param2):
-    response = '<b>Parametr 1:</b> ' + param1 + '<br>' + '<b>Parametr 2:</b> ' + param2
-    return HttpResponse(response)
 
 @login_required
 def raport(request):
@@ -61,9 +57,10 @@ def dodanie_kategorii(request):
         form = CategoryForm()
         return render(request, 'dodanie-kategorii.html', {'form':form})
 
+@login_required
 def dodanie_konta(request):
     if request.method == "POST":
-        form = CategoryForm(request.POST)
+        form = AccountForm(request.POST)
         if form.is_valid():
             acc = form.save(commit=False)
             acc.user = request.user

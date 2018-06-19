@@ -1,0 +1,90 @@
+body,html,.row-offcanvas {
+    height:100%;
+  }
+  
+  body {
+    padding-top: 50px;
+    font-family: Helvetica,Arial,sans-serif;
+  }
+
+  .nav-item {
+    border: 1px solid #5b5b5b;
+    border-radius: 5px;
+}
+
+#accountsDropdown, .dropdown-menu {
+    border: 1px solid #222;
+}
+
+.navbar-brand {
+    font-size: 30px;
+}
+
+.nav>li>a:hover, .navbar-brand:hover, .nav-pills li a:hover {
+    text-decoration: none;
+    color: #454745;
+    background-color: inherit;
+}
+
+  .nav-pills li a:hover, .dropdown a:hover {
+    background-color: #9d9d9d;
+    color: #222;
+}
+#sidebar {
+    width: inherit;
+    min-width: 220px;
+    max-width: 220px;
+    float: left;
+    height:100%;    
+    position:relative;
+    overflow-y:auto;
+    overflow-x:hidden;
+    border: 3px solid #222;
+  }
+
+ .nav-pills li a{
+    color:#9d9d9d;
+  }
+
+.dropdown-container li a{
+    margin-left: 15px;
+    margin-right: 15px;
+    border: 1px solid #5b5b5b;
+}
+
+.nav li a:focus {
+    background-color: #9d9d9d;
+    color: #222;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+    content: '\e259';
+    display: block;
+    position: absolute;
+    right: 10px;
+    font-family: 'Glyphicons Halflings';
+}
+
+a[aria-expanded="true"]::before {
+    content: '\e260';
+}
+
+  #main {
+    height:100%;
+    overflow:auto;
+    background-color: #f5f5f5;
+  }
+
+  .container-fluid {
+    width: 100%;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-top: 30px;
+    margin-right: auto;
+    margin-left: auto;
+
+}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Raport | Budżet domowy{% endblock %}
+
+{% block content %}
+<ol class="breadcrumb breadcrumb-arrow">
+        <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li>
+        <li class="active"><span>Moje transakcje</span>
+        </li>
+    </ol>
+{% if transactions %}
+<table>
+    {% for transaction in transactions %}
+        <tr>
+            <td>{{transaction.user}}</td>
+            <td>{{transaction.account}}</td>
+            <td>{{transaction.title}}</td>
+            <td>{{transaction.date}}</td>
+            <td>{{transaction.amount}}</td>
+            <td>{{transaction.currency}}</td>
+            <td>{{transaction.categories}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>Brak transakcji</p>
+{% endif %}
+{% endblock %}

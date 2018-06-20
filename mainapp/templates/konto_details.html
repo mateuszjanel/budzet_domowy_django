@@ -3,15 +3,17 @@
 {% block title %}Raport | Budżet domowy{% endblock %}
 
 {% block content %}
-<ol class="breadcrumb breadcrumb-arrow">
-        <li>
-            <a href="/">
-                <i class="glyphicon glyphicon-home"></i>
-            </a>
-        </li>
-        <li><span>Moje konta</span></li>
-        <li class="active"><span>{{ current_account.name }}</span></li>
-</ol>
+<div id="breadcrumb-panel">
+    <ol class="breadcrumb breadcrumb-arrow">
+            <li>
+                <a href="/">
+                    <i class="glyphicon glyphicon-home"></i>
+                </a>
+            </li>
+            <li><a href="#">Moje konta</a></li>
+            <li class="active"><span>{{ current_account.name }}</span></li>
+    </ol>
+<div id="breadcrumb-panel">
 
 <h2>Stan skarbonki: </h2><h1>{{ current_account.balance }}</h1>
 

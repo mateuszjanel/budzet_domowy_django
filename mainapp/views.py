@@ -42,7 +42,7 @@ def dodanie_transakcji(request):
             trans.user = request.user
             trans.account = request.session['current_account']
             trans.save()
-            
+
         return redirect('index')
     else:
         form = TransactionForm()
@@ -84,7 +84,12 @@ def dodanie_konta(request):
     else:
         form = AccountForm()
         return render(request, 'dodanie-konta.html', {'form':form})
- 
+def konto_details(request, id):
+    permissions = Permission.objects.filter(account = id).values()
+    acc = Account.objects.get(pk=id)
+    request.session['current_account_id'] = acc.id
+    context = {'permissions' : permissions, 'current_account':acc}
+    return render(request,'konto_details.html', context)
         
 def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)

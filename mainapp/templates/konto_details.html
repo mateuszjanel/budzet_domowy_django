@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Raport | Budżet domowy{% endblock %}
+
+{% block content %}
+<ol class="breadcrumb breadcrumb-arrow">
+        <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li>
+        <li><span>Moje konta</span></li>
+        <li class="active"><span>{{ current_account.name }}</span></li>
+</ol>
+
+<h2>Stan skarbonki: </h2><h1>{{ current_account.balance }}</h1>
+
+<h3>Osoby, które mogą korzystać ze skarbonki:</h3></br>
+<table class="border">
+    {% for permission in permissions %}
+        <tr>
+            <!--  TODO: account to jest int a nie Account  -->
+            <td>{{permission.account.name}}</td>
+            {% if permission.owner %}
+            <td>Właściciel</td>
+            {% endif %}
+            </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

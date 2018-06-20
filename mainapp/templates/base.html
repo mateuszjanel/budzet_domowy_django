@@ -96,7 +96,7 @@
 						<ul class="collapse nav nav-pills nav-stacked dropdown-container" id="accountsSubmenu">
 							{% for acc in request.session.accounts %}
 							<li>
-								<a href="#">{{ acc.name }}</a>
+								<a href="/konto/{{ acc.id }}">{{ acc.name }}</a>
 							</li>
 							{% endfor %}
 							<li>

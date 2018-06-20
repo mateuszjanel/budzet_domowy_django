@@ -1,10 +1,58 @@
 {% extends "base.html" %} {% block title %}Home | Budżet domowy{% endblock %} {% block content %}
-<ol class="breadcrumb breadcrumb-arrow">
+{% load static %}
+<link href="{% static 'index.css' %}" rel="stylesheet" type="text/css" />
+
+
+<div id="breadcrumb-panel">   
+    <ol class="breadcrumb breadcrumb-arrow">
         <li>
             <a href="/">
                 <i class="glyphicon glyphicon-home"></i>
             </a>
         </li>
     </ol>
-<p>Strona główna</p>
+</div>
+
+<div class="panel-row">
+    {% for account in request.session.accounts %}
+    <div id="panel-col" class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <img src="{% static "piggy-bank.svg" %}" alt="Piggy bank"/>
+                </div>
+                <div class="col-xs-9 text-right">
+                    <h2>
+                        {{ account.name }}
+                    </h2>
+                    <p>
+                        {{ account.balance }} 
+                    </p>
+                </div>
+            </div>
+        </div>
+        <a href="/konto/{{ acc.id }}">
+            <div class="panel-footer">
+                <div class="row">
+                    <span class="pull-left">Zobacz szczegóły</span>
+                    <span class="pull-right">
+                    <i class="glyphicon glyphicon-circle-arrow-right"></i>
+                    </span>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+    <div id="panel-col" class="panel panel-default">
+        <div class="panel-body">
+            <div class="row add-acc">
+                <a href="{% url 'dodanie_konta' %}">
+                    <h1 class="glyphicon glyphicon-plus"></h1>
+                </a>  
+            </div>
+        </div>
+        
+    </div>
+</div>
+
 {% endblock %}

@@ -47,7 +47,7 @@
 
 	<div class="row-offcanvas row-offcanvas-left">
 		<div id="sidebar" class="sidebar-offcanvas navbar-inverse">
-			<div class="col-md-12 well well-md">
+			<div class="col-md-12 well well-sm">
 				{% if user.get_full_name  %}
 				<h4>
 					Witaj, {{ user.get_full_name }}!
@@ -56,21 +56,25 @@
 				<h4>
 					Witaj!
 				</h4>
-				{% endif %}
-				<p>
-					Stan skarbonki:
-					{% if request.session.current_account %} {{request.session.current_account.balance}} {% else %} --{% endif %}
-				</p>
-				<div class="dropdown">
-					Skarbonka:
-					<button id="accountsDropdown" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						{% if request.session.current_account %} {{request.session.current_account.name}} {% else %} nie wybrano{% endif %}
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="accountsDropdown">
-						<!--tu konciska-->
-					</ul>
-				</div>
+				{% endif %}<br>
+				<dl>
+					<dt>
+						Aktywna skarbonka:
+					</dt>
+					<dd>
+						{% if request.session.current_account %} 
+						{{ request.session.current_account.name }}
+						{% else %}
+						Nie wybrano
+						{% endif %}
+					</dd>
+					<dt>
+						Saldo:
+					</dt>
+					<dd>
+						{% if request.session.current_account %} {{request.session.current_account.balance}} {% else %} -----{% endif %}
+					</dd>
+				</dl>
 			</div>
 			<div class="col-md-12">
 				<ul class="nav nav-pills nav-stacked">

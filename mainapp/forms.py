@@ -6,8 +6,8 @@ from datetimewidget.widgets import DateWidget
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        widgets = {'date': DateWidget(
-            attrs={'id': 'date'}, bootstrap_version=3, options={'todayHighlight': True})}
+        #widgets = {'date': DateWidget(
+        #    attrs={'id': 'date'}, bootstrap_version=3, options={'todayHighlight': True})}
         fields = ('title', 'amount', 'currency', 'date', 'categories',)
 
 

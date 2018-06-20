@@ -24,13 +24,13 @@ def index(request):
 
 @login_required
 def raport(request):
-    transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account'))
-    context = {'transactions' : transactions}
+    transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+    context = {'transactions' : list(transactions)}
     return render(request,'raport.html', context)
 
 def raportAll(request):
-    transactions = Transaction.objects.filter(user = request.user)
-    context = {'transactions' : transactions}
+    transactions = Transaction.objects.filter(user = request.user).values()
+    context = {'transactions': list(transactions)}
     return render(request,'raport.html', context)
 
 @login_required
@@ -40,10 +40,13 @@ def dodanie_transakcji(request):
         if form.is_valid():
             trans = form.save(commit=False)
             trans.user = request.user
-            trans.account = request.session['current_account']
+            trans.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             trans.save()
+            acc = trans.account
+            acc.balance += trans.amount
+            acc.save()
 
-        return redirect('index')
+        return redirect('raport')
     else:
         form = TransactionForm()
         return render(request, 'dodanie-transakcji.html', {'form':form})
@@ -62,7 +65,7 @@ def dodanie_kategorii(request):
         form = CategoryForm(request.POST)
         if form.is_valid():
             cat = form.save(commit=False)
-            cat.account = request.session['current_account']
+            cat.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             cat.save()
         return redirect('index')
     else:
@@ -87,8 +90,12 @@ def dodanie_konta(request):
 def konto_details(request, id):
     permissions = Permission.objects.filter(account = id).values()
     acc = Account.objects.get(pk=id)
-    request.session['current_account_id'] = acc.id
-    context = {'permissions' : permissions, 'current_account':acc}
+    for perm in permissions:
+        perm['user_id'] = User.objects.get(pk=perm['user_id']).username
+    for account in request.session['accounts']:
+        if account['id'] == id:
+            request.session['current_account'] = account
+    context = {'permissions' : list(permissions), 'current_account':acc}
     return render(request,'konto_details.html', context)
         
 def anonymous_required(view_function, redirect_to = None):

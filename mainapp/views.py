@@ -8,9 +8,14 @@ from .models import *
 from .forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+import xhtml2pdf.pisa as pisa
 
 from django.views.generic import ListView
  
+
 def index(request):
     if request.user.is_authenticated:
         accounts = Account.objects.filter(user = request.user).values()
@@ -144,7 +149,33 @@ def konto_details(request, id):
                 request.session['current_account'] = account
         context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)}
         return render(request,'konto_details.html', context)
-        
+
+@login_required
+def raport_pdf(request):
+    if request.session.has_key('current_account'):
+        transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+        context = {'request' : request, 'transactions' : list(transactions)}
+        return PdfRender.render('raport-pdf.html', params=context)
+    else:
+        return redirect('index')
+
+# def render_pdf_view(request):
+#     template_path = 'raport.html'
+#     # context = {'myvar': 'this is your template context'}
+#     # Create a Django response object, and specify content_type as pdf
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+#     # find the template and render it.
+#     template = get_template(template_path)
+#     html = template.render(Context(context))
+
+#     # create a pdf
+#     pisaStatus = pisa.CreatePDF(
+#        html, dest=response, link_callback=link_callback)
+#     if pisaStatus.err:
+#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+#     return response
+
 def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)
  
@@ -159,7 +190,20 @@ class AnonymousRequired(object):
         if request.user is not None and request.user.is_authenticated:
             return HttpResponseRedirect(self.redirect_to)
         return self.view_function(request, *args, **kwargs)
- 
+
+class PdfRender:
+
+    @staticmethod
+    def render(path: str, params: dict):
+        template = get_template(path)
+        html = template.render(params)
+        response = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+        if not pdf.err:
+            return HttpResponse(response.getvalue(), content_type='application/pdf')
+        else:
+            return HttpResponse("Error Rendering PDF", status=400)
+
 # @anonymous_required
 # def register(request):
 #     register_form = RegistrationForm(request.POST or None,

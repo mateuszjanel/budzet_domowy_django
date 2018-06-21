@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.urls import path
 
+
 from . import views
 
 urlpatterns = [
@@ -13,5 +14,6 @@ urlpatterns = [
     url(r'^dodanie_konta$', views.dodanie_konta, name='dodanie_konta'),
     path('usuwanie_konta/<int:id>', views.usuwanie_konta,name='usuwanie_konta'),
     url(r'^dodanie_zlecenia_stalego$', views.dodanie_zlecenia_stalego, name='dodanie_zlecenia_stalego'),
-    path('konto/<int:id>',views.konto_details, name='konto_details') 
+    path('konto/<int:id>',views.konto_details, name='konto_details'),
+    path('raport_pdf',views.raport_pdf, name='raport_pdf'),
 ]

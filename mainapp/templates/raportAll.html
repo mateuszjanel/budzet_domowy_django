@@ -29,13 +29,13 @@
     <tbody>
     {% for transaction in transactions %}
         <tr>
-            <td>{{transaction.account.name}}</td>
+            <td>{{transaction.account_id}}</td>
             <td>{{transaction.title}}</td>
             <td>{{transaction.date}}</td>
             <td>{{transaction.amount}}</td>
             <td>{{transaction.currency_id}}</td>
-            <td>{% if transaction.categories.name %}
-                {{transaction.categories.name}}
+            <td>{% if transaction.categories_id %}
+                {{transaction.categories_id}}
                 {% else %}
                 No category
                 {% endif %}

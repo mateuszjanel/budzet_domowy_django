@@ -112,7 +112,7 @@ def dodanie_zlecenia_stalego(request):
             stor.user = request.user
             stor.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             stor.save()
-        return redirect('index') 
+        return redirect('zlecenia_stale') 
     else: 
         form = StandingOrderForm() 
         return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 

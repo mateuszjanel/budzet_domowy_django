@@ -21,6 +21,7 @@
             <th scope="col">Kwota</th>
             <th scope="col">Waluta</th>
             <th scope="col">Kategorie</th>
+            <th scope="col">Opcje</th>
         </tr>
         </thead>
     {% for transaction in transactions %}
@@ -34,6 +35,12 @@
                     {{category.name}}, 
                 {% endfor %}
             </td>
+            <td>
+                <a href="/usuwanie_transakcji/{{ transaction.id }}">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
+            </td>
+
         </tr>
     {% endfor %}
 </table>

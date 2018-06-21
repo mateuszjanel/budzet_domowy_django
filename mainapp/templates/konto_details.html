@@ -16,7 +16,8 @@
 <div id="breadcrumb-panel">
 
 <h2>Stan skarbonki: </h2><h1>{{ current_account.balance }}</h1>
-
+<a href="/usuwanie_konta/{{ current_account.id }}">
+        <span class="glyphicon glyphicon-minus"></span> Usun konto</a>
 <h3>Osoby, które mogą korzystać ze skarbonki:</h3></br>
 <table class="table">
     {% for permission in permissions %}

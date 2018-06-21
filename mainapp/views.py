@@ -23,14 +23,20 @@ def index(request):
 
 @login_required
 def raport(request):
-    transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
-    context = {'transactions' : list(transactions)}
-    return render(request,'raport.html', context)
+    if request.session.has_key('current_account'):
+        transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+        context = {'transactions' : list(transactions)}
+        return render(request,'raport.html', context)
+    else:
+        return redirect('index')
 
+@login_required
 def raportAll(request):
     transactions = Transaction.objects.filter(user = request.user).values()
+    for trans in transactions:
+        trans['user_id'] = User.objects.get(pk=trans['user_id']).username
     context = {'transactions': list(transactions)}
-    return render(request,'raport.html', context)
+    return render(request,'raportAll.html', context)
 
 @login_required
 def dodanie_transakcji(request):
@@ -53,6 +59,20 @@ def dodanie_transakcji(request):
     else:
         form = TransactionForm()
         return render(request, 'dodanie-transakcji.html', {'form':form})
+@login_required
+def usuwanie_transakcji(request,id):
+    trans = Transaction.objects.get(pk=id)
+    acc = trans.account
+    acc.balance -= trans.amount
+    acc.save()
+    trans.delete()
+
+    accounts = Account.objects.filter(user = request.user).values()
+    request.session['accounts'] = list(accounts)
+    for i in request.session['accounts']:
+        i['balance'] = str(i['balance'])
+
+    return redirect('raport')
 
 @login_required
 def dodanie_zlecenia_stalego(request): 
@@ -90,6 +110,20 @@ def dodanie_konta(request):
     else:
         form = AccountForm()
         return render(request, 'dodanie-konta.html', {'form':form})
+
+@login_required
+def usuwanie_konta(request,id):
+    acc = Account.objects.get(pk=id)
+    acc.delete()
+
+    del request.session['current_account']
+    accounts = Account.objects.filter(user = request.user).values()
+    request.session['accounts'] = list(accounts)
+    for i in request.session['accounts']:
+        i['balance'] = str(i['balance'])
+
+    return redirect('raport')
+
 def konto_details(request, id):
     permissions = Permission.objects.filter(account = id).values()
     acc = Account.objects.get(pk=id)

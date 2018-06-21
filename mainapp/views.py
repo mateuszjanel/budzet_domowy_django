@@ -12,6 +12,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 import xhtml2pdf.pisa as pisa
+import datetime
 
 from django.views.generic import ListView
  
@@ -197,11 +198,14 @@ def raport_pdf(request):
     if request.session.has_key('current_account'):
         transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
         for trans in transactions:
+            trans['user_id'] = User.objects.get(pk=trans['user_id']).username
             trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
-        context = {'request' : request, 'transactions' : list(transactions)}
+        date  = datetime.date.today()
+        context = {'request' : request, 'transactions' : list(transactions), 'date': date}
         return PdfRender.render('raport-pdf.html', params=context)
     else:
         return redirect('index')
+        
 
 # def render_pdf_view(request):
 #     template_path = 'raport.html'

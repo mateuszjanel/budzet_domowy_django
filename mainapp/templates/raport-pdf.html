@@ -1,31 +1,61 @@
-{% block content %}
-
-<page style="font-size: 14px">
-    <h1>Raport konta: {{request.session.current_account.name}} | Budzet domowy</h1>
-    {% if transactions %}
+{% block title %}Raport | Budzet domowy{% endblock %}
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
     
-    <table style="text-align: center; border: solid 1px black; background: #FFEEEE;width: 40%" align="center">
-        <thead>
-            <tr class="head" style="text-align: center; margin-top:10px">
-                <td><h2>Tytul</h2></td>
-                <td><h2>Data</h2></td>
-                <td><h2>Kwota</h2></td>
-                <td><h2>Waluta</h2></td>
-                <td><h2>Kategoria</h2></td>
-            </tr>
-            </thead>
-        {% for transaction in transactions %}
-            <tr>
-                <td>{{transaction.title}}</td>
-                <td>{{transaction.date}}</td>
-                <td>{{transaction.amount}}</td>
-                <td>{{transaction.currency_id}}</td>
-                <td>{{transaction.categories_id}}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-        <p>Brak transakcji</p>
-    {% endif %}
-    {% endblock %}
-</page>
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    tr:hover {background-color:#f5f5f5;}
+    </style>
+
+<!-- {% block content %} -->
+<div>
+    <ol>
+        <!-- <li>
+            <a href="/">
+                <i class="glyphicon glyphicon-home"></i>
+            </a>
+        </li> -->
+        <li><span><b>Skarbonka:</b> {{request.session.current_account.name}} - Raport Transakcji na dzien {{date}}</span>
+            <br /><br /><span> <font size=6><b>Stan skarbonki: </b>{{ request.session.current_account.balance }}</font></span>
+        </li>
+    </ol>
+</div>
+
+{% if transactions %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Tytul</th>
+            <th scope="col">Data</th>
+            <th scope="col">Kwota</th>
+            <th scope="col">Waluta</th>
+            <th scope="col">Kategorie</th>
+        </tr>
+        </thead>
+    {% for transaction in transactions %}
+        <tr>
+            <td>{{transaction.title}}</td>
+            <td>{{transaction.date}}</td>
+            <td>{{transaction.amount}}</td>
+            <td>{{transaction.currency_id}}</td>
+            <td>
+                    {{transaction.categories_id}}
+            </td>
+
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>Brak transakcji</p>
+{% endif %}
+{% endblock %}

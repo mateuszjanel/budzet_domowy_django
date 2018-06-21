@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Raport | Budżet domowy{% endblock %}
+{% block title %}Szczegóły skarbonki | Budżet domowy{% endblock %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'account-details.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'forms.css' %}" type="text/css" />
+
 <div id="breadcrumb-panel">
     <ol class="breadcrumb breadcrumb-arrow">
             <li>
@@ -10,25 +14,84 @@
                     <i class="glyphicon glyphicon-home"></i>
                 </a>
             </li>
-            <li><a href="#">Moje konta</a></li>
+            <li><a href="/">Moje skarbonki</a></li>
             <li class="active"><span>{{ current_account.name }}</span></li>
     </ol>
 <div id="breadcrumb-panel">
 
-<h2>Stan skarbonki: </h2><h1>{{ current_account.balance }}</h1>
+<div class="main-container">
+    <div class="container well">
+        <div class="row">
+            <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Stan skarbonki </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p> {{ current_account.balance }}</p>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Użytkownicy skarbonki </h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class = "list-group">
+                                {% if permissions %}
+                                {% for permission in permissions %}
+                                    <li class = "list-group-item">
+                                        {{ permission.user_id }}<div class="badge">Właściciel</div>
+                                    </li>
+                                {% endfor %}
+                                {% else %}
+                                <p>Brak skarbonek</p>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Kategorie </h3>
+                        </div>
+                        <div class="panel-body">
+                            {% if categories %}
+                            <ul class = "list-group">
+                                {% for category in categories %}
+                                    <li class = "list-group-item">
+                                        {% if category.name %}
+                                            {{ category.name }}
+                                        {% else %}
+                                        Tak samo jak poprzednio{% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p>Brak kategorii</p>
+                            {% endif %}
+                        </div>
+                </div>
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Dodaj kategorię </h3>
+                        </div>
+                        <div class="panel-body">
+                            <form method="POST" class="category-form">{% csrf_token %} 
+                                <div class="form-group">
+                                    {{ form.name.errors }}
+                                    <label class="reg-lbl" for="{{ form.name.id_for_label }}">Nazwa: </label>
+                                    {{ form.name }}
+                                </div> 
+                                <button type="submit" class="save btn btn-default">Dodaj</button>
+                            </form>    
+                        </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
 <a href="/usuwanie_konta/{{ current_account.id }}">
         <span class="glyphicon glyphicon-minus"></span> Usun konto</a>
-<h3>Osoby, które mogą korzystać ze skarbonki:</h3></br>
-<table class="table">
-    {% for permission in permissions %}
-        <tr>
-            <!--  TODO: account to jest int a nie Account  -->
-            <td>{{permission.user_id}}</td>
-            {% if permission.owner %}
-            <td>Właściciel</td>
-            {% endif %}
-            </tr>
-    {% endfor %}
-</table>
-
 {% endblock %}

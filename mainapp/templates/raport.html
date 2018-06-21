@@ -3,7 +3,8 @@
 {% block title %}Raport | Budżet domowy{% endblock %}
 
 {% block content %}
-<ol class="breadcrumb breadcrumb-arrow">
+<div id="breadcrumb-panel">
+    <ol class="breadcrumb breadcrumb-arrow">
         <li>
             <a href="/">
                 <i class="glyphicon glyphicon-home"></i>
@@ -12,6 +13,8 @@
         <li class="active"><span>{{request.session.current_account.name}} - Transakcje</span>
         </li>
     </ol>
+</div>
+
 {% if transactions %}
 <table class="table">
     <thead>

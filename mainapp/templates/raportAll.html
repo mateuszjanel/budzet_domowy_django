@@ -3,20 +3,22 @@
 {% block title %}Raport ogólny| Budżet domowy{% endblock %}
 
 {% block content %}
-<ol class="breadcrumb breadcrumb-arrow">
-        <li>
-            <a href="/">
-                <i class="glyphicon glyphicon-home"></i>
-            </a>
-        </li>
-        <li class="active"><span>Wszystkie transakcje</span>
-        </li>
+<div id="breadcrumb-panel">
+    <ol class="breadcrumb breadcrumb-arrow">
+            <li>
+                <a href="/">
+                    <i class="glyphicon glyphicon-home"></i>
+                </a>
+            </li>
+            <li class="active"><span>Wszystkie transakcje</span>
+            </li>
     </ol>
+</div>
 {% if transactions %}
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Skarbonka</th>
+            <th scope="col">Nazwa skarbonki</th>
             <th scope="col">Tytuł</th>
             <th scope="col">Data</th>
             <th scope="col">Kwota</th>

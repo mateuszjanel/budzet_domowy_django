@@ -125,15 +125,25 @@ def usuwanie_konta(request,id):
     return redirect('raport')
 
 def konto_details(request, id):
-    permissions = Permission.objects.filter(account = id).values()
-    acc = Account.objects.get(pk=id)
-    for perm in permissions:
-        perm['user_id'] = User.objects.get(pk=perm['user_id']).username
-    for account in request.session['accounts']:
-        if account['id'] == id:
-            request.session['current_account'] = account
-    context = {'permissions' : list(permissions), 'current_account':acc}
-    return render(request,'konto_details.html', context)
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            cat = form.save(commit=False)
+            cat.account = request.session['current_account']
+            cat.save()
+        return redirect('index')
+    else:
+        form = CategoryForm()
+        permissions = Permission.objects.filter(account = id).values()
+        categories = Category.objects.filter(account = id).values()
+        acc = Account.objects.get(pk=id)
+        for perm in permissions:
+            perm['user_id'] = User.objects.get(pk=perm['user_id']).username
+        for account in request.session['accounts']:
+            if account['id'] == id:
+                request.session['current_account'] = account
+        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form}
+        return render(request,'konto_details.html', context)
         
 def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)

@@ -10,7 +10,6 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'base.css' %}" type="text/css">
 	<link rel="stylesheet" href="{% static 'breadcrumb.css' %}" type="text/css">
-	<link rel="stylesheet" href="{% static 'forms.css' %}" type="text/css"/>
 	{% if form %}
     {{ form.media }}
     {% endif %}
@@ -113,11 +112,6 @@
 						<a href="{% url 'dodanie_zlecenia_stalego' %}">
 							<span class="glyphicon glyphicon-plus"></span> Dodaj zlecenie stałe</a>
 					</li>
-					<li class="nav-item">
-						<a href="{% url 'dodanie_kategorii' %}">
-							<span class="glyphicon glyphicon-plus"></span> Dodaj kategorię</a>
-					</li>
-
 				</ul>
 			</div>
 		</div>

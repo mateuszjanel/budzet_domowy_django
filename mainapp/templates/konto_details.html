@@ -60,10 +60,8 @@
                             <ul class = "list-group">
                                 {% for category in categories %}
                                     <li class = "list-group-item">
-                                        {% if category.name %}
-                                            {{ category.name }}
-                                        {% else %}
-                                        Tak samo jak poprzednio{% endif %}
+                                        {{ category.name }}
+                                        <a href="/usuwanie_kategorii/{{ category.id }}"><span class="pull-right glyphicon glyphicon-minus"></span></a>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -87,11 +85,14 @@
                             </form>    
                         </div>
                 </div>
+                <div class="pull-right">
+                    <a href="/usuwanie_konta/{{ current_account.id }}">
+                    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span> Usuń skarbonkę</button>
+                </a></div>
             </div>
         </div>  
     </div>
 </div>
 
-<a href="/usuwanie_konta/{{ current_account.id }}">
-        <span class="glyphicon glyphicon-minus"></span> Usun konto</a>
+
 {% endblock %}

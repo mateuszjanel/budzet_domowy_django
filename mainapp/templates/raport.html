@@ -3,6 +3,10 @@
 {% block title %}Raport | Budżet domowy{% endblock %}
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'raport.css' %}" type="text/css"/>
+
+
 <div id="breadcrumb-panel">
     <ol class="breadcrumb breadcrumb-arrow">
         <li>
@@ -10,7 +14,8 @@
                 <i class="glyphicon glyphicon-home"></i>
             </a>
         </li>
-        <li class="active"><span>{{request.session.current_account.name}} - Transakcje</span>
+        <li><a href="/konto/{{request.session.current_account.id}}">{{request.session.current_account.name}}</a></li>
+        <li class="active"><span>Transakcje</span>
         </li>
     </ol>
 </div>
@@ -23,7 +28,7 @@
             <th scope="col">Data</th>
             <th scope="col">Kwota</th>
             <th scope="col">Waluta</th>
-            <th scope="col">Kategorie</th>
+            <th scope="col">Kategoria</th>
             <th scope="col">Opcje</th>
         </tr>
         </thead>
@@ -33,11 +38,7 @@
             <td>{{transaction.date}}</td>
             <td>{{transaction.amount}}</td>
             <td>{{transaction.currency_id}}</td>
-            <td>
-                {% for category in transaction.categories %}
-                    {{category.name}}, 
-                {% endfor %}
-            </td>
+            <td>{{transaction.categories.name}}</td>
             <td>
                 <a href="/usuwanie_transakcji/{{ transaction.id }}">
                     <span class="glyphicon glyphicon-minus"></span>

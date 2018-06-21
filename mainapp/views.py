@@ -129,7 +129,7 @@ def konto_details(request, id):
         form = CategoryForm(request.POST)
         if form.is_valid():
             cat = form.save(commit=False)
-            cat.account = request.session['current_account']
+            cat.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             cat.save()
         return redirect('index')
     else:
@@ -142,7 +142,7 @@ def konto_details(request, id):
         for account in request.session['accounts']:
             if account['id'] == id:
                 request.session['current_account'] = account
-        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form}
+        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)}
         return render(request,'konto_details.html', context)
         
 def anonymous_required(view_function, redirect_to = None):

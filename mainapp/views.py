@@ -166,7 +166,6 @@ def konto_details(request, id):
         context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)} 
         return render(request,'konto_details.html', context)
 
-<<<<<<< HEAD
 @login_required
 def raport_pdf(request):
     if request.session.has_key('current_account'):
@@ -192,8 +191,6 @@ def raport_pdf(request):
 #     if pisaStatus.err:
 #        return HttpResponse('We had some errors <pre>' + html + '</pre>')
 #     return response
-=======
->>>>>>> 3d532b6332566267913a2db66653ed3aec5a9885
 
 def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)

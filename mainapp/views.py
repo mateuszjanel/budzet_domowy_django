@@ -176,10 +176,15 @@ def raport_pdf(request):
     if request.session.has_key('current_account'):
         transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
         for trans in transactions:
+<<<<<<< HEAD
             trans['user_id'] = User.objects.get(pk=trans['user_id']).username
             trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
         date  = datetime.date.today()
         context = {'request' : request, 'transactions' : list(transactions), 'date': date}
+=======
+            trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
+        context = {'request' : request, 'transactions' : list(transactions)}
+>>>>>>> ae890a8bbb8ab9923a45f736f39505060c4add5e
         return PdfRender.render('raport-pdf.html', params=context)
     else:
         return redirect('index')

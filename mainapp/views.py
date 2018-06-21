@@ -30,6 +30,9 @@ def index(request):
 def raport(request):
     if request.session.has_key('current_account'):
         transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+        for trans in transactions:
+            trans['user_id'] = User.objects.get(pk=trans['user_id']).username
+            trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
         context = {'transactions' : list(transactions)}
         return render(request,'raport.html', context)
     else:
@@ -40,6 +43,7 @@ def raportAll(request):
     transactions = Transaction.objects.filter(user = request.user).values()
     for trans in transactions:
         trans['user_id'] = User.objects.get(pk=trans['user_id']).username
+        trans['categories_id'] = Categories.objects.get(pk=trans['categories_id']).name
     context = {'transactions': list(transactions)}
     return render(request,'raportAll.html', context)
 

@@ -26,6 +26,7 @@
             </a>
         </li> -->
         <li><span><b>Skarbonka:</b> {{request.session.current_account.name}} - Raport Transakcji na dzien {{date}}</span>
+            <br /><br /><span> <font size=6><b>Stan skarbonki: </b>{{ request.session.current_account.balance }}</font></span>
         </li>
     </ol>
 </div>

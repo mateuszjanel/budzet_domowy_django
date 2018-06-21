@@ -1,53 +1,31 @@
-{% extends "base.html" %}
-
-{% block title %}Raport | Budżet domowy{% endblock %}
-
 {% block content %}
-<div id="breadcrumb-panel">
-    <ol class="breadcrumb breadcrumb-arrow">
-        <li>
-            <a href="/">
-                <i class="glyphicon glyphicon-home"></i>
-            </a>
-        </li>
-        <li class="active"><span>{{request.session.current_account.name}} - Transakcje</span>
-        </li>
-    </ol>
-</div>
 
-{% if transactions %}
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Tytuł</th>
-            <th scope="col">Data</th>
-            <th scope="col">Kwota</th>
-            <th scope="col">Waluta</th>
-            <th scope="col">Kategorie</th>
-            <th scope="col">Opcje</th>
-        </tr>
-        </thead>
-    {% for transaction in transactions %}
-        <tr>
-            <td>{{transaction.title}}</td>
-            <td>{{transaction.date}}</td>
-            <td>{{transaction.amount}}</td>
-            <td>{{transaction.currency_id}}</td>
-            <td>
-                {% for category in transaction.categories %}
-                    {{category.name}}, 
-                {% endfor %}
-            </td>
-            <td>
-                <a href="/usuwanie_transakcji/{{ transaction.id }}">
-                    <span class="glyphicon glyphicon-minus"></span>
-                </a>
-            </td>
-
-        </tr>
-    {% endfor %}
-</table>
-{% else %}
-    <p>Brak transakcji</p>
-{% endif %}
-{% endblock %}
+<page style="font-size: 14px">
+    <h1>Raport konta: {{request.session.current_account.name}} | Budzet domowy</h1>
+    {% if transactions %}
+    
+    <table style="text-align: center; border: solid 1px black; background: #FFEEEE;width: 40%" align="center">
+        <thead>
+            <tr class="head" style="text-align: center; margin-top:10px">
+                <td><h2>Tytul</h2></td>
+                <td><h2>Data</h2></td>
+                <td><h2>Kwota</h2></td>
+                <td><h2>Waluta</h2></td>
+                <td><h2>Kategoria</h2></td>
+            </tr>
+            </thead>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{transaction.title}}</td>
+                <td>{{transaction.date}}</td>
+                <td>{{transaction.amount}}</td>
+                <td>{{transaction.currency_id}}</td>
+                <td>{{transaction.categories_id}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Brak transakcji</p>
+    {% endif %}
+    {% endblock %}
+</page>

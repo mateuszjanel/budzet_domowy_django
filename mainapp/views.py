@@ -174,6 +174,8 @@ def konto_details(request, id):
 def raport_pdf(request):
     if request.session.has_key('current_account'):
         transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+        for trans in transactions:
+            trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
         context = {'request' : request, 'transactions' : list(transactions)}
         return PdfRender.render('raport-pdf.html', params=context)
     else:

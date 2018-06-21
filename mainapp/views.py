@@ -32,7 +32,7 @@ def raport(request):
     if request.session.has_key('current_account'):
         transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
         for trans in transactions:
-            trans['user_id'] = User.objects.get(pk=trans['user_id']).username
+            trans['account_id'] = Account.objects.get(pk=trans['account_id']).name
             trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
         context = {'transactions' : list(transactions)}
         return render(request,'raport.html', context)
@@ -43,10 +43,19 @@ def raport(request):
 def raportAll(request):
     transactions = Transaction.objects.filter(user = request.user).values()
     for trans in transactions:
-        trans['user_id'] = User.objects.get(pk=trans['user_id']).username
-        trans['categories_id'] = Categories.objects.get(pk=trans['categories_id']).name
+        trans['account_id'] = Account.objects.get(pk=trans['account_id']).name
+        trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
     context = {'transactions': list(transactions)}
     return render(request,'raportAll.html', context)
+
+@login_required
+def zlecenia_stale(request):
+    standOrds = StandingOrder.objects.filter(user = request.user).values()
+    for stor in standOrds:
+        stor['account_id'] = Account.objects.get(pk=stor['account_id']).name
+        stor['categories_id'] = Category.objects.get(pk=stor['categories_id']).name
+    context = {'standOrds': list(standOrds)}
+    return render(request,'zlecenia-stale.html', context)
 
 @login_required
 def dodanie_transakcji(request):
@@ -86,11 +95,24 @@ def usuwanie_transakcji(request,id):
 
     return redirect('raport')
 
+def usuwanie_zlecenia_stalego(request,id):
+    stor = StandingOrder.objects.get(pk=id)
+    stor.delete()
+
+    return redirect('zlecenia_stale')
+
 @login_required
 def dodanie_zlecenia_stalego(request): 
     if request.method == "POST": 
-        # tu też poczekaj na ogarnięcie kont 
-        return redirect('index') 
+        form = StandingOrderForm(request.POST)
+        if form.is_valid():
+            stor = form.save(commit=False)
+            if request.POST['type'] == "Wydatek":
+                stor.amount = stor.amount * (-1)
+            stor.user = request.user
+            stor.account = Account.objects.get(pk=request.session.get('current_account')['id'])
+            stor.save()
+        return redirect('zlecenia_stale') 
     else: 
         form = StandingOrderForm() 
         return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 

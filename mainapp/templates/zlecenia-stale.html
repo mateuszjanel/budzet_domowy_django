@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Raport ogólny| Budżet domowy{% endblock %}
+
+{% block content %}
+<div id="breadcrumb-panel">
+    <ol class="breadcrumb breadcrumb-arrow">
+            <li>
+                <a href="/">
+                    <i class="glyphicon glyphicon-home"></i>
+                </a>
+            </li>
+            <li class="active"><span>Zlecenia stałe</span>
+            </li>
+    </ol>
+</div>
+
+<a href="/dodanie_zlecenia_stalego"><button type="button" class="btn btn-default">Dodaj zlecenie stałe</button></a>
+
+{% if standOrds %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Nazwa skarbonki</th>
+            <th scope="col">Tytuł</th>
+            <th scope="col">Kwota</th>
+            <th scope="col">Intwerwał</th>
+            <th scope="col">Waluta</th>
+            <th scope="col">Kategoria</th>
+            <th scope="col">Następna Data</th>
+            <th scope="col">Opcje</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for stor in standOrds %}
+        <tr>
+            <td>{{stor.account_id}}</td>
+            <td>{{stor.title}}</td>
+            <td>{{stor.amount}}</td>
+            <td>{{stor.frequency}}</td>
+            <td>{{stor.currency_id}}</td>
+            <td>{% if stor.categories_id %}
+                {{stor.categories_id}}
+                {% else %}
+                No category
+                {% endif %}
+            </td>
+            <td>{{stor.next_date}}</td>
+            <td>
+                <a href="/usuwanie_zlecenia_stalego/{{ stor.id }}">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>Brak zlecen stalych</p>
+{% endif %}
+{% endblock %}

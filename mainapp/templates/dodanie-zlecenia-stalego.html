@@ -50,6 +50,13 @@
                         <label class="reg-lbl" for="{{ form.frequency.id_for_label }}">Częstotliwość: </label>
                         <input class="form-control" id="id_frequency" type="number" name="frequency" required="" min="0" /> 
                     </div>
+                    <div class="form-group">
+                        <label class="reg-lbl" for="type">Typ transakcji:</label>
+                        <select class="form-control" value="{{ type }}" name="type" id="type">
+                            <option>Wydatek</option>
+                            <option>Przychód</option>
+                        </select>
+                    </div>
                     <button type="submit" class="save btn btn-default">Dodaj</button>
                 </form>
             </div>

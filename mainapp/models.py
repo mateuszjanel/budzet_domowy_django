@@ -5,7 +5,7 @@ from decimal import Decimal
 
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name="użytkownik")
-    name = models.CharField("nazwa", max_length=15)
+    name = models.CharField("nazwa", max_length=25)
     balance = models.DecimalField("saldo", max_digits=100, decimal_places=2,default=Decimal('0.00'))
 
     def __str__(self):
@@ -47,7 +47,7 @@ class Transaction(models.Model):
     date = models.DateField("data", default=date.today)
     amount = models.DecimalField("kwota", max_digits=100, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name="waluta")
-    categories = models.ManyToManyField(Category, verbose_name="kategoria")
+    categories = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="kategoria")
 
     def __str__(self):
         return self.title
@@ -72,7 +72,7 @@ class StandingOrder(models.Model):
     title = models.CharField("tytuł", max_length=30, default='') 
     amount = models.DecimalField("kwota", max_digits=100, decimal_places=2) 
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name="waluta") 
-    categories = models.ManyToManyField(Category, verbose_name="kategoria") 
+    categories = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name="kategoria")
     next_date = models.DateField("data następnego wykonania", default=date.today) 
     frequency = models.IntegerField("częstotliwość") 
  

@@ -39,6 +39,10 @@ label {
     color: #5a5a5a;
 }
 
+input[type="radio"] {
+    height: inherit;
+}
+
 input, input[type="number"], select {
     height: 30px;
     width:20em;
@@ -61,3 +65,4 @@ input, input[type="number"], select {
     height: 30px;
     width: 20em;
 }
+

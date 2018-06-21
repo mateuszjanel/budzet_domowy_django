@@ -49,6 +49,8 @@ def dodanie_transakcji(request):
         form = TransactionForm(request.POST)
         if form.is_valid():
             trans = form.save(commit=False)
+            if request.POST['type'] == "Wydatek":
+                trans.amount = trans.amount * (-1)
             trans.user = request.user
             trans.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             trans.save()
@@ -87,6 +89,7 @@ def dodanie_zlecenia_stalego(request):
     else: 
         form = StandingOrderForm() 
         return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 
+
 @login_required 
 def dodanie_kategorii(request):
     if request.method == "POST":
@@ -99,6 +102,18 @@ def dodanie_kategorii(request):
     else:
         form = CategoryForm()
         return render(request, 'dodanie-kategorii.html', {'form':form})
+
+@login_required
+def usuwanie_kategorii(request,id):
+    cat = Category.objects.get(pk=id)
+    cat.delete()
+
+    accounts = Account.objects.filter(user = request.user).values()
+    request.session['accounts'] = list(accounts)
+    for i in request.session['accounts']:
+        i['balance'] = str(i['balance'])
+
+    return redirect('raport')
 
 @login_required
 def dodanie_konta(request):
@@ -129,12 +144,13 @@ def usuwanie_konta(request,id):
 
     return redirect('raport')
 
+@login_required
 def konto_details(request, id):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
             cat = form.save(commit=False)
-            cat.account = Account.objects.get(pk=request.session.get('current_account')['id'])
+            cat.account = Account.objects.get(pk=request.session.get('current_account')['id']) 
             cat.save()
         return redirect('index')
     else:
@@ -147,9 +163,10 @@ def konto_details(request, id):
         for account in request.session['accounts']:
             if account['id'] == id:
                 request.session['current_account'] = account
-        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)}
+        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)} 
         return render(request,'konto_details.html', context)
 
+<<<<<<< HEAD
 @login_required
 def raport_pdf(request):
     if request.session.has_key('current_account'):
@@ -175,6 +192,8 @@ def raport_pdf(request):
 #     if pisaStatus.err:
 #        return HttpResponse('We had some errors <pre>' + html + '</pre>')
 #     return response
+=======
+>>>>>>> 3d532b6332566267913a2db66653ed3aec5a9885
 
 def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% block title %}Raport | Budżet domowy{% endblock %}
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
@@ -50,11 +51,36 @@
             <td>
                     {{transaction.categories_id}}
             </td>
+=======
+{% block content %}
+>>>>>>> ae890a8bbb8ab9923a45f736f39505060c4add5e
 
-        </tr>
-    {% endfor %}
-</table>
-{% else %}
-    <p>Brak transakcji</p>
-{% endif %}
-{% endblock %}
+<page style="font-size: 14px">
+    <h1>Raport konta: {{request.session.current_account.name}} | Budzet domowy</h1>
+    {% if transactions %}
+    
+    <table style="text-align: center; border: solid 1px black; background: #FFEEEE;width: 40%" align="center">
+        <thead>
+            <tr class="head" style="text-align: center; margin-top:10px">
+                <td><h2>Tytul</h2></td>
+                <td><h2>Data</h2></td>
+                <td><h2>Kwota</h2></td>
+                <td><h2>Waluta</h2></td>
+                <td><h2>Kategoria</h2></td>
+            </tr>
+            </thead>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{transaction.title}}</td>
+                <td>{{transaction.date}}</td>
+                <td>{{transaction.amount}}</td>
+                <td>{{transaction.currency_id}}</td>
+                <td>{{transaction.categories_id}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Brak transakcji</p>
+    {% endif %}
+    {% endblock %}
+</page>

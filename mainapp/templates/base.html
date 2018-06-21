@@ -67,12 +67,6 @@
 						Nie wybrano
 						{% endif %}
 					</dd>
-					<dt>
-						Saldo:
-					</dt>
-					<dd>
-						{% if request.session.current_account %} {{request.session.current_account.balance}} {% else %} -----{% endif %}
-					</dd>
 				</dl>
 			</div>
 			<div class="col-md-12">

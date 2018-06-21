@@ -23,7 +23,7 @@
             <th scope="col">Data</th>
             <th scope="col">Kwota</th>
             <th scope="col">Waluta</th>
-            <th scope="col">Kategorie</th>
+            <th scope="col">Kategoria</th>
         </tr>
     </thead>
     <tbody>
@@ -34,10 +34,11 @@
             <td>{{transaction.date}}</td>
             <td>{{transaction.amount}}</td>
             <td>{{transaction.currency_id}}</td>
-            <td>
-                {% for category in transaction.categories %}
-                    {{category.name}},
-                {% endfor %}
+            <td>{% if transaction.categories.name %}
+                {{transaction.categories.name}}
+                {% else %}
+                No category
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

@@ -32,7 +32,7 @@
                 <div class="form-group">
                     {{ form.amount.errors }}
                     <label class="reg-lbl" for="{{ form.amount.id_for_label }}">Kwota: </label>
-                    <input class="form-control" id="id_amount" type="number" name="amount" required="" min="0" step="0.01"/> 
+                    <input class="form-control" id="id_amount" type="number" name="amount" required="" step="0.01"/> 
                 </div>
                 <div class="form-group">
                      {{ form.currency.errors }}
@@ -49,6 +49,14 @@
                     <label class="reg-lbl" for="{{ form.date.id_for_label }}">Data: </label>
                     {{ form.date }}
                 </div>
+                <div class="form-group">
+                    <label class="reg-lbl" for="type">Typ transakcji:</label>
+                    <select class="form-control" value="{{ type }}" name="type" id="type">
+                        <option>Wydatek</option>
+                        <option>Przychód</option>
+                    </select>
+                </div>
+                <input type="hidden" name="next" value="{{ request.path }}">
                 <button type="submit" class="save btn btn-default">Dodaj</button>
             </form>
         </div>

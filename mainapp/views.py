@@ -8,9 +8,14 @@ from .models import *
 from .forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+import xhtml2pdf.pisa as pisa
 
 from django.views.generic import ListView
  
+
 def index(request):
     if request.user.is_authenticated:
         accounts = Account.objects.filter(user = request.user).values()
@@ -25,6 +30,9 @@ def index(request):
 def raport(request):
     if request.session.has_key('current_account'):
         transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+        for trans in transactions:
+            trans['user_id'] = User.objects.get(pk=trans['user_id']).username
+            trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
         context = {'transactions' : list(transactions)}
         return render(request,'raport.html', context)
     else:
@@ -35,6 +43,7 @@ def raportAll(request):
     transactions = Transaction.objects.filter(user = request.user).values()
     for trans in transactions:
         trans['user_id'] = User.objects.get(pk=trans['user_id']).username
+        trans['categories_id'] = Categories.objects.get(pk=trans['categories_id']).name
     context = {'transactions': list(transactions)}
     return render(request,'raportAll.html', context)
 
@@ -44,6 +53,8 @@ def dodanie_transakcji(request):
         form = TransactionForm(request.POST)
         if form.is_valid():
             trans = form.save(commit=False)
+            if request.POST['type'] == "Wydatek":
+                trans.amount = trans.amount * (-1)
             trans.user = request.user
             trans.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             trans.save()
@@ -82,6 +93,7 @@ def dodanie_zlecenia_stalego(request):
     else: 
         form = StandingOrderForm() 
         return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 
+
 @login_required 
 def dodanie_kategorii(request):
     if request.method == "POST":
@@ -94,6 +106,18 @@ def dodanie_kategorii(request):
     else:
         form = CategoryForm()
         return render(request, 'dodanie-kategorii.html', {'form':form})
+
+@login_required
+def usuwanie_kategorii(request,id):
+    cat = Category.objects.get(pk=id)
+    cat.delete()
+
+    accounts = Account.objects.filter(user = request.user).values()
+    request.session['accounts'] = list(accounts)
+    for i in request.session['accounts']:
+        i['balance'] = str(i['balance'])
+
+    return redirect('raport')
 
 @login_required
 def dodanie_konta(request):
@@ -124,12 +148,13 @@ def usuwanie_konta(request,id):
 
     return redirect('raport')
 
+@login_required
 def konto_details(request, id):
     if request.method == "POST":
         form = CategoryForm(request.POST)
         if form.is_valid():
             cat = form.save(commit=False)
-            cat.account = Account.objects.get(pk=request.session.get('current_account')['id'])
+            cat.account = Account.objects.get(pk=request.session.get('current_account')['id']) 
             cat.save()
         return redirect('index')
     else:
@@ -142,9 +167,37 @@ def konto_details(request, id):
         for account in request.session['accounts']:
             if account['id'] == id:
                 request.session['current_account'] = account
-        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)}
+        context = {'permissions' : list(permissions), 'current_account':acc, 'form':form, 'categories':list(categories)} 
         return render(request,'konto_details.html', context)
-        
+
+@login_required
+def raport_pdf(request):
+    if request.session.has_key('current_account'):
+        transactions = Transaction.objects.filter(user = request.user,account = request.session.get('current_account')['id']).values()
+        for trans in transactions:
+            trans['categories_id'] = Category.objects.get(pk=trans['categories_id']).name
+        context = {'request' : request, 'transactions' : list(transactions)}
+        return PdfRender.render('raport-pdf.html', params=context)
+    else:
+        return redirect('index')
+
+# def render_pdf_view(request):
+#     template_path = 'raport.html'
+#     # context = {'myvar': 'this is your template context'}
+#     # Create a Django response object, and specify content_type as pdf
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+#     # find the template and render it.
+#     template = get_template(template_path)
+#     html = template.render(Context(context))
+
+#     # create a pdf
+#     pisaStatus = pisa.CreatePDF(
+#        html, dest=response, link_callback=link_callback)
+#     if pisaStatus.err:
+#        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+#     return response
+
 def anonymous_required(view_function, redirect_to = None):
     return AnonymousRequired(view_function, redirect_to)
  
@@ -159,7 +212,20 @@ class AnonymousRequired(object):
         if request.user is not None and request.user.is_authenticated:
             return HttpResponseRedirect(self.redirect_to)
         return self.view_function(request, *args, **kwargs)
- 
+
+class PdfRender:
+
+    @staticmethod
+    def render(path: str, params: dict):
+        template = get_template(path)
+        html = template.render(params)
+        response = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
+        if not pdf.err:
+            return HttpResponse(response.getvalue(), content_type='application/pdf')
+        else:
+            return HttpResponse("Error Rendering PDF", status=400)
+
 # @anonymous_required
 # def register(request):
 #     register_form = RegistrationForm(request.POST or None,

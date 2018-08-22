@@ -18,6 +18,5 @@ urlpatterns = [
     path('usuwanie_zlecenia_stalego/<int:id>', views.usuwanie_zlecenia_stalego,name='usuwanie_zlecenia_stalego'),
     path('konto/<int:id>',views.konto_details, name='konto_details'),
     path('raport_pdf',views.raport_pdf, name='raport_pdf'),
-
     url(r'^zlecenia_stale$', views.zlecenia_stale, name='zlecenia_stale'),
 ]

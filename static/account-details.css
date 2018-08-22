@@ -1,0 +1,22 @@
+
+.well {
+    background-color: #ffffff;
+    border: 1px solid #d7d8e1
+}
+
+.panel-heading h3 {
+    font-weight: 900;
+    height: 20px;
+    margin-top: 5px;
+}
+
+.panel-body p {
+    font-size: 20px;
+    text-align: right;
+    margin-bottom:5px;
+    margin-top: 5px;
+}
+
+li a {
+    color: #333;
+}

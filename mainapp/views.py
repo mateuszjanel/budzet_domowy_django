@@ -69,7 +69,7 @@ def dodanie_transakcji(request):
             trans.account = Account.objects.get(pk=request.session.get('current_account')['id'])
             trans.save()
             acc = trans.account
-            acc.balance += trans.amount
+            acc.balance += trans.amount*Currency.objects.get(pk = trans.currency).rate
             acc.save()
             accounts = Account.objects.filter(user = request.user).values()
             request.session['accounts'] = list(accounts)
@@ -84,7 +84,7 @@ def dodanie_transakcji(request):
 def usuwanie_transakcji(request,id):
     trans = Transaction.objects.get(pk=id)
     acc = trans.account
-    acc.balance -= trans.amount
+    acc.balance -= trans.amount*Currency.objects.get(pk = trans.currency).rate
     acc.save()
     trans.delete()
 
@@ -102,20 +102,23 @@ def usuwanie_zlecenia_stalego(request,id):
     return redirect('zlecenia_stale')
 
 @login_required
-def dodanie_zlecenia_stalego(request): 
-    if request.method == "POST": 
-        form = StandingOrderForm(request.POST)
-        if form.is_valid():
-            stor = form.save(commit=False)
-            if request.POST['type'] == "Wydatek":
-                stor.amount = stor.amount * (-1)
-            stor.user = request.user
-            stor.account = Account.objects.get(pk=request.session.get('current_account')['id'])
-            stor.save()
-        return redirect('zlecenia_stale') 
-    else: 
-        form = StandingOrderForm() 
-        return render(request, 'dodanie-zlecenia-stalego.html', {'form':form}) 
+def dodanie_zlecenia_stalego(request):
+    if request.session.has_key('current_account'): 
+        if request.method == "POST": 
+            form = StandingOrderForm(request.POST)
+            if form.is_valid():
+                stor = form.save(commit=False)
+                if request.POST['type'] == "Wydatek":
+                    stor.amount = stor.amount * (-1)
+                stor.user = request.user
+                stor.account = Account.objects.get(pk=request.session.get('current_account')['id'])
+                stor.save()
+            return redirect('zlecenia_stale') 
+        else: 
+            form = StandingOrderForm() 
+            return render(request, 'dodanie-zlecenia-stalego.html', {'form':form})
+    else:
+        redirect('index') 
 
 @login_required 
 def dodanie_kategorii(request):
